@@ -15,7 +15,7 @@ import animationData from "../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
-const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+const ENDPOINT = "https://mern-talk-a-tive-kunal.herokuapp.com/"; 
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -56,6 +56,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       );
       setMessages(data);
       setLoading(false);
+      console.log(data);
 
       socket.emit("join chat", selectedChat._id);
     } catch (error) {
@@ -72,7 +73,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
-      socket.emit("stop typing", selectedChat._id);
+      // socket.emit("stop typing", selectedChat._id);
       try {
         const config = {
           headers: {
@@ -121,6 +122,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     // eslint-disable-next-line
   }, [selectedChat]);
 
+  // console.log(1);
+  // console.log(notification);
+  
   useEffect(() => {
     socket.on("message recieved", (newMessageRecieved) => {
       if (
@@ -136,6 +140,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     });
   });
+
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -158,7 +163,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }, timerLength);
   };
 
+
   return (
+    
     <>
       {selectedChat ? (
         <>
@@ -261,4 +268,4 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   );
 };
 
-export default SingleChat;
+export default SingleChat
